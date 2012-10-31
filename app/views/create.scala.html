@@ -1,0 +1,524 @@
+@(saveoForm: Form[SaveoForm])
+
+@import helper._
+
+<script type="text/javascript">
+  var showPage = function(page) {
+    if(page == 1) {
+      $("#personalInformations").show();
+      $("#serviceInformations").hide();
+      $("#productInformations").hide();
+      window.location.hash="personalInformations";
+    } else if(page == 2) {
+      $("#personalInformations").hide();
+      $("#productInformations").show();
+      $("#serviceInformations").hide();
+      window.location.hash="productInformations";
+    } else if(page == 3) {
+      $("#personalInformations").hide();      
+      $("#productInformations").hide();
+      $("#serviceInformations").show();
+      window.location.hash="serviceInformations";
+    }
+  }
+</script>
+
+
+@main("Questionnaires satisfaction SAV dossier n°: " + saveoForm.get().saveoid) {
+  
+<div class="head" style="clear:both">
+</div>
+@form(routes.Application.save()) {
+  
+<ul class="unstyled">
+  <li id="personalInformations">
+    <legend>VOS INFORMATIONS</legend>
+    <div class="control-group">
+      <label for="age" class="control-label">
+        Quel âge avez vous ? :
+      </label>
+      <div class="controls">
+        <select name="age">
+          <option value="1">Moins de 18 ans</option>
+          <option value="2">Entre 18 et 24 ans</option>
+          <option value="3">Entre 25 et 34 ans</option>
+          <option value="4">Entre 35 et 44 ans</option>
+          <option value="5">Entre 45 et 54 ans</option>
+          <option value="6">Entre 55 et 65 ans</option>
+          <option value="7">Plus de 65 ans</option>          
+        </select>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="gender" class="control-label">
+        Vous êtes :
+      </label>
+      <div class="controls">
+        <select name="gender">
+          <option value="male">Un homme</option>
+          <option value="female">Une femme</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="diyLevel" class="control-label">
+        Quel est votre niveau de bricolage ?
+      </label>
+      <div class="controls">
+        <select name="diyLevel">
+          <option value="debutant">Débutant</option>
+          <option value="occasionel">Occasionnel</option>
+          <option value="passione">Passioné</option>
+          <option value="expert">Expert</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="showPage(2);return false;">Suivant... </button>
+
+    </div>
+  </li>
+
+
+  <li id="productInformations" style="display:none">
+    <legend>AVIS SUR LE PRODUIT</legend>
+    <div class="control-group">
+      <label for="globalProductRating" class="control-label">
+        Note générale :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+        <input class="star" type="radio" name="globalProductRating" value="1" >
+      </label>
+      <label class="radio inline">
+        <input class="star" type="radio" name="globalProductRating" value="2" >
+      </label>
+      <label class="radio inline">
+        <input class="star" type="radio" name="globalProductRating" value="3" >
+      </label>
+      <label class="radio inline">
+        <input class="star" type="radio" name="globalProductRating" value="4" >
+      </label>
+      <label class="radio inline">
+        <input class="star" type="radio" name="globalProductRating" value="5" >
+      </label>
+      </div>
+    </div>
+
+
+
+    <div class="control-group">
+      <label for="recommendProduct" class="control-label">
+        Je recommanderai ce produit à un ami :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+        <input type="radio" name="recommendProduct" id="recommendProduct1" value="1" checked> Oui
+      </label>
+      <label class="radio inline">
+        <input type="radio" name="recommendProduct" id="recommendProduct2" value="2" > Non
+      </label>    
+      </div>
+    </div>
+
+
+    <legend>Partagez votre opinion et écrivez un avis détaillé</legend>
+
+    <label for="">Titre de l'avis :</label>
+    <input type="text" name="title" class="input-xlarge"/>
+    <span class="help-block">Exemple: bon rapport qualité/prix.</span>
+
+    <label for="">Avis :</label>
+    <textarea rows="10" name="avis" class="input-xlarge"/></textarea>
+    <span class="help-block">Votre avis doit comporter au moins 50 caractères,. Sinon seules les notes seront prises en compte.</span>
+
+    <div class="container">
+      <div class="row">
+        <div class="span4">
+          <label>Vous avez aimé</label>
+          <input type="checkbox"/><input type="text" placeholder="Ajouter une note positive" class="input-large"/>
+        </div>
+        <div class="span4">
+          <label>Vous n'avez pas aimé</label>
+          <input type="checkbox"/><input type="text" placeholder="Ajouter une note négative" class="input-large"/>
+        </div>
+      </div>
+    </div>
+
+    <legend>Notez le produit sur une ou plusieurs des catégories suivantes</legend>
+
+    <div class="control-group">
+      <label for="productQuality" class="control-label">
+        Qualité :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+        <input type="radio" class="star" name="productQuality" value="1" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productQuality" value="2" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productQuality" value="3" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productQuality" value="4" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productQuality" value="5" >
+      </label>
+      </div>
+    </div>
+
+
+
+    <div class="control-group">
+      <label for="productUsage" class="control-label">
+        Usage :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+        <input type="radio" class="star" name="productUsage" value="1" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productUsage" value="2" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productUsage" value="3" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productUsage" value="4" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productUsage" value="5" >
+      </label>
+      </div>
+    </div>
+
+
+
+    <div class="control-group">
+      <label for="productNotice" class="control-label">
+        Notice :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+        <input type="radio" class="star" name="productNotice" id="productNotice1" value="1" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productNotice" id="productNotice2" value="2" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productNotice" id="productNotice3" value="3" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productNotice" id="productNotice4" value="4" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productNotice" id="productNotice5" value="5" >
+      </label>
+      </div>
+    </div>
+
+
+    <div class="control-group">
+      <label for="productMontage" class="control-label">
+        Montage :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+        <input type="radio" class="star" name="productMontage" id="productMontage1" value="1" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productMontage" id="productMontage2" value="2" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productMontage" id="productMontage3" value="3" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productMontage" id="productMontage4" value="4" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productMontage" id="productMontage5" value="5" >
+      </label>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="productMaintenance" class="control-label">
+        Entretien :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+        <input type="radio" class="star" name="productMaintenance" id="productMaintenance1" value="1" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productMaintenance" id="productMaintenance2" value="2" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productMaintenance" id="productMaintenance3" value="3" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productMaintenance" id="productMaintenance4" value="4" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star" name="productMaintenance" id="productMaintenance5" value="5" >
+      </label>
+      </div>
+    </div>
+
+
+    <div class="control-group">
+      <label for="productSecurity" class="control-label">
+        Sécurité d'utilisation :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+        <input type="radio" class="star"name="productSecurity" id="productSecurity1" value="1" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star"name="productSecurity" id="productSecurity2" value="2" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star"name="productSecurity" id="productSecurity3" value="3" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star"name="productSecurity" id="productSecurity4" value="4" >
+      </label>
+      <label class="radio inline">
+        <input type="radio" class="star"name="productSecurity" id="productSecurity5" value="5" >
+      </label>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="showPage(1);return false;">Précédent</button>
+      <button class="btn" onclick="showPage(3);return false;">Suivant</button>
+    </div>
+  </li>
+
+
+
+
+  <li id="serviceInformations" style="display:none">
+    <legend>NOTE DU SERVICE</legend>
+    <div class="control-group">
+      <label for="globalRating" class="control-label">
+      	Note générale :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="globalRating" id="globaRating1" value="1" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="globalRating" id="globaRating2" value="2" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="globalRating" id="globaRating3" value="3" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="globalRating" id="globaRating4" value="4" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="globalRating" id="globaRating5" value="5" >
+      </label>
+      </div>
+    </div>
+
+
+
+    <div class="control-group">
+      <label for="recommendService" class="control-label">
+      	Je recommanderai ce service à un ami :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+    	  <input type="radio" name="recommendService" value="1" checked> Oui
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" name="recommendService" value="0" > Non
+      </label>    
+      </div>
+    </div>
+
+
+    <legend>Partagez votre opinion et écrivez un avis détaillé</legend>
+
+    <label for="">Titre de l'avis :</label>
+    <input type="text" name="title" class="input-xlarge"/>
+    <span class="help-block">Exemple: bon rapport qualité/prix.</span>
+
+    <label for="">Avis :</label>
+    <textarea rows="10" name="avis" class="input-xlarge"/></textarea>
+    <span class="help-block">Votre avis doit comporter au moins 50 caractères,. Sinon seules les notes seront prises en compte.</span>
+
+    <div class="container">
+      <div class="row">
+        <div class="span4">
+        	<label>Vous avez aimé</label>
+        	<input type="checkbox"/><input type="text" placeholder="Ajouter une note positive" class="input-large"/>
+        </div>
+        <div class="span4">
+        	<label>Vous n'avez pas aimé</label>
+        	<input type="checkbox"/><input type="text" placeholder="Ajouter une note négative" class="input-large"/>
+        </div>
+      </div>
+    </div>
+
+    <legend>Notez le service sur une ou plusieurs des catégories suivantes</legend>
+
+    <div class="control-group">
+      <label for="serviceRespect" class="control-label">
+      	Respect du service :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="serviceRespect" id="serviceRespect1" value="1" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="serviceRespect" id="serviceRespect2" value="2" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="serviceRespect" id="serviceRespect3" value="3" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="serviceRespect" id="serviceRespect4" value="4" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="serviceRespect" id="serviceRespect5" value="5" >
+      </label>
+      </div>
+    </div>
+
+
+
+    <div class="control-group">
+      <label for="accueil" class="control-label">
+      	Accueil :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="accueil" id="accueil1" value="1" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="accueil" id="accueil2" value="2" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="accueil" id="accueil3" value="3" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="accueil" id="accueil4" value="4" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="accueil" id="accueil5" value="5" >
+      </label>
+      </div>
+    </div>
+
+
+
+    <div class="control-group">
+      <label for="Ecoute" class="control-label">
+      	Ecoute :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="Ecoute" id="Ecoute1" value="1" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="Ecoute" id="Ecoute2" value="2" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="Ecoute" id="Ecoute3" value="3" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="Ecoute" id="Ecoute4" value="4" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="Ecoute" id="Ecoute5" value="5" >
+      </label>
+      </div>
+    </div>
+
+
+    <div class="control-group">
+      <label for="confiance" class="control-label">
+      	Confiance :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="confiance" id="confiance1" value="1" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="confiance" id="confiance2" value="2" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="confiance" id="confiance3" value="3" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="confiance" id="confiance4" value="4" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="confiance" id="confiance5" value="5" >
+      </label>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="techSkills" class="control-label">
+      	Compétences techniques :
+      </label>
+      <div class="controls">
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="techSkills" id="techSkills1" value="1" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="techSkills" id="techSkills2" value="2" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="techSkills" id="techSkills3" value="3" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="techSkills" id="techSkills4" value="4" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="techSkills" id="techSkills5" value="5" >
+      </label>
+      </div>
+    </div>
+
+
+    <div class="control-group">
+      <div class="controls">
+      <label for="waitingTime" class="control-label inline">
+      	Temps d'attente :
+      </label>
+      
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="waitingTime" id="waitingTime1" value="1" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="waitingTime" id="waitingTime2" value="2" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="waitingTime" id="waitingTime3" value="3" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="waitingTime" id="waitingTime4" value="4" >
+      </label>
+      <label class="radio inline">
+    	  <input type="radio" class="star" name="waitingTime" id="waitingTime5" value="5" >
+      </label>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="showPage(2);return false;">Précédent</button>      
+      <button type="submit" class="btn">Envoyer </button>
+    </div>
+  </li>
+  </ul>
+  
+}
+    
+}
