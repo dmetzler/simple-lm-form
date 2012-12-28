@@ -5,8 +5,11 @@
 # Home page
 GET     /                           controllers.Application.index()
 
-GET		/form/:formid/:cypher				controllers.Application.create(formid: String, cypher: String)
+GET		/form/:formid/:productid/:cypher				controllers.Application.create(formid: String, productid: String, cypher: String)
 POST	/form					    controllers.Application.save()
+
+
+GET		/forms/:from/:to/:cypher  controllers.Application.list(from: org.joda.time.DateTime, to: org.joda.time.DateTime, cypher:String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

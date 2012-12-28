@@ -1,0 +1,7 @@
+@(from: org.joda.time.DateTime, to: org.joda.time.DateTime, list: List[SaveoForm])
+{ "period" : { "start" : "@from.toString("yyyy-MM-dd")",
+               "end" : "@to.toString("yyyy-MM-dd")"
+              },
+   "nbresult" : "@list.size",
+   "forms" : [ @Html(list.map(_.toJson).mkString(","))]
+}

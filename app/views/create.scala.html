@@ -1,6 +1,7 @@
 @(saveoForm: Form[SaveoForm])
 
 @import helper._
+@import models.FormValues._
 
 <script type="text/javascript">
   var showPage = function(page) {
@@ -24,55 +25,35 @@
 </script>
 
 
-@main("Questionnaires satisfaction SAV dossier n°: " + saveoForm.get().saveoid) {
+@main("Questionnaires satisfaction SAV dossier n°: " + saveoForm.get().saveoId) {
   
 <div class="head" style="clear:both">
 </div>
 @form(routes.Application.save()) {
   
+<input type="hidden" name="saveoId" value="@saveoForm.get().saveoId"/>
+<input type="hidden" name="productId" value="@saveoForm.get().productId"/>
 <ul class="unstyled">
   <li id="personalInformations">
     <legend>VOS INFORMATIONS</legend>
-    <div class="control-group">
-      <label for="age" class="control-label">
-        Quel âge avez vous ? :
-      </label>
+    <div class="control-group">      
       <div class="controls">
-        <select name="age">
-          <option value="1">Moins de 18 ans</option>
-          <option value="2">Entre 18 et 24 ans</option>
-          <option value="3">Entre 25 et 34 ans</option>
-          <option value="4">Entre 35 et 44 ans</option>
-          <option value="5">Entre 45 et 54 ans</option>
-          <option value="6">Entre 55 et 65 ans</option>
-          <option value="7">Plus de 65 ans</option>          
-        </select>
+        @select(field = saveoForm("age"), options(Ages), 
+          '_label -> "Quel âge avez vous ? :", '_error -> saveoForm.globalError)        
       </div>
     </div>
 
-    <div class="control-group">
-      <label for="gender" class="control-label">
-        Vous êtes :
-      </label>
+    <div class="control-group">      
       <div class="controls">
-        <select name="gender">
-          <option value="male">Un homme</option>
-          <option value="female">Une femme</option>
-        </select>
+        @select(field = saveoForm("gender"), options(Genders), 
+          '_label -> "Vous êtes :", '_error -> saveoForm.globalError)
       </div>
     </div>
 
-    <div class="control-group">
-      <label for="diyLevel" class="control-label">
-        Quel est votre niveau de bricolage ?
-      </label>
+    <div class="control-group">      
       <div class="controls">
-        <select name="diyLevel">
-          <option value="debutant">Débutant</option>
-          <option value="occasionel">Occasionnel</option>
-          <option value="passione">Passioné</option>
-          <option value="expert">Expert</option>
-        </select>
+        @select(field = saveoForm("diyLevel"), options(DIYLevels), 
+          '_label -> "Quel est votre niveau de bricolage ?", '_error -> saveoForm.globalError)
       </div>
     </div>
     <div class="actions">
@@ -85,40 +66,28 @@
   <li id="productInformations" style="display:none">
     <legend>AVIS SUR LE PRODUIT</legend>
     <div class="control-group">
-      <label for="globalProductRating" class="control-label">
-        Note générale :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-        <input class="star" type="radio" name="globalProductRating" value="1" >
-      </label>
-      <label class="radio inline">
-        <input class="star" type="radio" name="globalProductRating" value="2" >
-      </label>
-      <label class="radio inline">
-        <input class="star" type="radio" name="globalProductRating" value="3" >
-      </label>
-      <label class="radio inline">
-        <input class="star" type="radio" name="globalProductRating" value="4" >
-      </label>
-      <label class="radio inline">
-        <input class="star" type="radio" name="globalProductRating" value="5" >
-      </label>
-      </div>
+      @inputRadioGroup(
+          saveoForm("globalProductRating"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Note générale",
+          '_error -> saveoForm.globalError)
     </div>
 
 
 
-    <div class="control-group">
+    <div class="control-group">    
       <label for="recommendProduct" class="control-label">
         Je recommanderai ce produit à un ami :
       </label>
+
+
       <div class="controls">
       <label class="radio inline">
         <input type="radio" name="recommendProduct" id="recommendProduct1" value="1" checked> Oui
       </label>
       <label class="radio inline">
-        <input type="radio" name="recommendProduct" id="recommendProduct2" value="2" > Non
+        <input type="radio" name="recommendProduct" id="recommendProduct2" value="0" > Non
       </label>    
       </div>
     </div>
@@ -126,23 +95,34 @@
 
     <legend>Partagez votre opinion et écrivez un avis détaillé</legend>
 
-    <label for="">Titre de l'avis :</label>
-    <input type="text" name="title" class="input-xlarge"/>
-    <span class="help-block">Exemple: bon rapport qualité/prix.</span>
+    @inputText(saveoForm("productAvistitle"),
+    '_label -> "Titre de l'avis",
+    '_help -> "Exemple: bon rapport qualité/prix.",
+    'class -> "input-xlarge")
 
-    <label for="">Avis :</label>
-    <textarea rows="10" name="avis" class="input-xlarge"/></textarea>
-    <span class="help-block">Votre avis doit comporter au moins 50 caractères,. Sinon seules les notes seront prises en compte.</span>
+    <span class="help-block"></span>
+
+    
+    @textarea(field = saveoForm("productAvis"), args = 'rows -> 10, 
+    '_label -> "Avis :", 
+    'class -> "input-xlarge",
+    '_help -> "Votre avis doit comporter au moins 50 caractères,. Sinon seules les notes seront prises en compte.")
 
     <div class="container">
       <div class="row">
         <div class="span4">
           <label>Vous avez aimé</label>
-          <input type="checkbox"/><input type="text" placeholder="Ajouter une note positive" class="input-large"/>
+          @checkbox(field = saveoForm("productHasPositiveNote"), '_label -> "")
+          @inputText(saveoForm("productPositiveNote"),                        
+            'placeholder -> "Ajouter une note positive",
+            'class -> "input-large", '_label -> "")          
         </div>
         <div class="span4">
           <label>Vous n'avez pas aimé</label>
-          <input type="checkbox"/><input type="text" placeholder="Ajouter une note négative" class="input-large"/>
+          @checkbox(field = saveoForm("productHasNegativeNote"), '_label -> "")
+          @inputText(saveoForm("productNegativeNote"),                        
+            'placeholder -> "Ajouter une note négative",
+            'class -> "input-large", '_label -> "")                    
         </div>
       </div>
     </div>
@@ -150,148 +130,62 @@
     <legend>Notez le produit sur une ou plusieurs des catégories suivantes</legend>
 
     <div class="control-group">
-      <label for="productQuality" class="control-label">
-        Qualité :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-        <input type="radio" class="star" name="productQuality" value="1" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productQuality" value="2" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productQuality" value="3" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productQuality" value="4" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productQuality" value="5" >
-      </label>
-      </div>
+      @inputRadioGroup(
+          saveoForm("productQuality"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Qualité",
+          '_error -> saveoForm.globalError)
     </div>
 
-
-
     <div class="control-group">
-      <label for="productUsage" class="control-label">
-        Usage :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-        <input type="radio" class="star" name="productUsage" value="1" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productUsage" value="2" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productUsage" value="3" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productUsage" value="4" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productUsage" value="5" >
-      </label>
-      </div>
+      @inputRadioGroup(
+          saveoForm("productUsage"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Usage",
+          '_error -> saveoForm.globalError)
     </div>
 
-
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("productNotice"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Notice",
+          '_error -> saveoForm.globalError)
+    </div>
 
     <div class="control-group">
-      <label for="productNotice" class="control-label">
-        Notice :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-        <input type="radio" class="star" name="productNotice" id="productNotice1" value="1" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productNotice" id="productNotice2" value="2" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productNotice" id="productNotice3" value="3" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productNotice" id="productNotice4" value="4" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productNotice" id="productNotice5" value="5" >
-      </label>
-      </div>
+      @inputRadioGroup(
+          saveoForm("productMontage"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Montage",
+          '_error -> saveoForm.globalError)
+    </div>
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("productMaintenance"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Entretien",
+          '_error -> saveoForm.globalError)
     </div>
 
 
     <div class="control-group">
-      <label for="productMontage" class="control-label">
-        Montage :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-        <input type="radio" class="star" name="productMontage" id="productMontage1" value="1" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productMontage" id="productMontage2" value="2" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productMontage" id="productMontage3" value="3" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productMontage" id="productMontage4" value="4" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productMontage" id="productMontage5" value="5" >
-      </label>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <label for="productMaintenance" class="control-label">
-        Entretien :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-        <input type="radio" class="star" name="productMaintenance" id="productMaintenance1" value="1" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productMaintenance" id="productMaintenance2" value="2" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productMaintenance" id="productMaintenance3" value="3" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productMaintenance" id="productMaintenance4" value="4" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star" name="productMaintenance" id="productMaintenance5" value="5" >
-      </label>
-      </div>
+      @inputRadioGroup(
+          saveoForm("productSecurity"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Sécurité d'utilisation",
+          '_error -> saveoForm.globalError)
     </div>
 
 
-    <div class="control-group">
-      <label for="productSecurity" class="control-label">
-        Sécurité d'utilisation :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-        <input type="radio" class="star"name="productSecurity" id="productSecurity1" value="1" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star"name="productSecurity" id="productSecurity2" value="2" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star"name="productSecurity" id="productSecurity3" value="3" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star"name="productSecurity" id="productSecurity4" value="4" >
-      </label>
-      <label class="radio inline">
-        <input type="radio" class="star"name="productSecurity" id="productSecurity5" value="5" >
-      </label>
-      </div>
-    </div>
+    
     <div class="actions">
       <button class="btn" onclick="showPage(1);return false;">Précédent</button>
       <button class="btn" onclick="showPage(3);return false;">Suivant</button>
@@ -304,64 +198,63 @@
   <li id="serviceInformations" style="display:none">
     <legend>NOTE DU SERVICE</legend>
     <div class="control-group">
-      <label for="globalRating" class="control-label">
-      	Note générale :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="globalRating" id="globaRating1" value="1" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="globalRating" id="globaRating2" value="2" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="globalRating" id="globaRating3" value="3" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="globalRating" id="globaRating4" value="4" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="globalRating" id="globaRating5" value="5" >
-      </label>
-      </div>
+      @inputRadioGroup(
+          saveoForm("globalServiceRating"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Note générale",
+          '_error -> saveoForm.globalError)
     </div>
+    
 
 
 
-    <div class="control-group">
-      <label for="recommendService" class="control-label">
-      	Je recommanderai ce service à un ami :
+    <div class="control-group">    
+      <label for="recommendProduct" class="control-label">
+        Je recommanderai ce service à un ami :
       </label>
+
+
       <div class="controls">
       <label class="radio inline">
-    	  <input type="radio" name="recommendService" value="1" checked> Oui
+        <input type="radio" name="recommendService" id="recommendService1" value="1" checked> Oui
       </label>
       <label class="radio inline">
-    	  <input type="radio" name="recommendService" value="0" > Non
+        <input type="radio" name="recommendService" id="recommendService2" value="0" > Non
       </label>    
       </div>
     </div>
 
-
     <legend>Partagez votre opinion et écrivez un avis détaillé</legend>
 
-    <label for="">Titre de l'avis :</label>
-    <input type="text" name="title" class="input-xlarge"/>
-    <span class="help-block">Exemple: bon rapport qualité/prix.</span>
+    @inputText(saveoForm("serviceAvistitle"),
+    '_label -> "Titre de l'avis",
+    '_help -> "Exemple: bon rapport qualité/prix.",
+    'class -> "input-xlarge")
 
-    <label for="">Avis :</label>
-    <textarea rows="10" name="avis" class="input-xlarge"/></textarea>
-    <span class="help-block">Votre avis doit comporter au moins 50 caractères,. Sinon seules les notes seront prises en compte.</span>
+    <span class="help-block"></span>
+
+    
+    @textarea(field = saveoForm("serviceAvis"), args = 'rows -> 10, 
+    '_label -> "Avis :", 
+    'class -> "input-xlarge",
+    '_help -> "Votre avis doit comporter au moins 50 caractères,. Sinon seules les notes seront prises en compte.")
 
     <div class="container">
       <div class="row">
         <div class="span4">
-        	<label>Vous avez aimé</label>
-        	<input type="checkbox"/><input type="text" placeholder="Ajouter une note positive" class="input-large"/>
+          <label>Vous avez aimé</label>
+          @checkbox(field = saveoForm("serviceHasPositiveNote"), '_label -> "")
+          @inputText(saveoForm("servicePositiveNote"),                        
+            'placeholder -> "Ajouter une note positive",
+            'class -> "input-large", '_label -> "")          
         </div>
         <div class="span4">
-        	<label>Vous n'avez pas aimé</label>
-        	<input type="checkbox"/><input type="text" placeholder="Ajouter une note négative" class="input-large"/>
+          <label>Vous n'avez pas aimé</label>
+          @checkbox(field = saveoForm("serviceHasNegativeNote"), '_label -> "")
+          @inputText(saveoForm("serviceNegativeNote"),                        
+            'placeholder -> "Ajouter une note négative",
+            'class -> "input-large", '_label -> "")                    
         </div>
       </div>
     </div>
@@ -369,148 +262,64 @@
     <legend>Notez le service sur une ou plusieurs des catégories suivantes</legend>
 
     <div class="control-group">
-      <label for="serviceRespect" class="control-label">
-      	Respect du service :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="serviceRespect" id="serviceRespect1" value="1" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="serviceRespect" id="serviceRespect2" value="2" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="serviceRespect" id="serviceRespect3" value="3" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="serviceRespect" id="serviceRespect4" value="4" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="serviceRespect" id="serviceRespect5" value="5" >
-      </label>
-      </div>
+        @inputRadioGroup(
+          saveoForm("serviceRespect"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Respect du service :",
+          '_error -> saveoForm.globalError)          
     </div>
 
 
 
     <div class="control-group">
-      <label for="accueil" class="control-label">
-      	Accueil :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="accueil" id="accueil1" value="1" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="accueil" id="accueil2" value="2" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="accueil" id="accueil3" value="3" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="accueil" id="accueil4" value="4" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="accueil" id="accueil5" value="5" >
-      </label>
-      </div>
+      @inputRadioGroup(
+          saveoForm("accueil"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Accueil :",
+          '_error -> saveoForm.globalError)
     </div>
 
 
 
     <div class="control-group">
-      <label for="Ecoute" class="control-label">
-      	Ecoute :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="Ecoute" id="Ecoute1" value="1" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="Ecoute" id="Ecoute2" value="2" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="Ecoute" id="Ecoute3" value="3" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="Ecoute" id="Ecoute4" value="4" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="Ecoute" id="Ecoute5" value="5" >
-      </label>
-      </div>
+      @inputRadioGroup(
+          saveoForm("ecoute"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Ecoute :",
+          '_error -> saveoForm.globalError)      
     </div>
 
 
     <div class="control-group">
-      <label for="confiance" class="control-label">
-      	Confiance :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="confiance" id="confiance1" value="1" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="confiance" id="confiance2" value="2" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="confiance" id="confiance3" value="3" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="confiance" id="confiance4" value="4" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="confiance" id="confiance5" value="5" >
-      </label>
-      </div>
+      @inputRadioGroup(
+          saveoForm("confiance"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Confiance :",
+          '_error -> saveoForm.globalError)      
     </div>
 
     <div class="control-group">
-      <label for="techSkills" class="control-label">
-      	Compétences techniques :
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="techSkills" id="techSkills1" value="1" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="techSkills" id="techSkills2" value="2" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="techSkills" id="techSkills3" value="3" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="techSkills" id="techSkills4" value="4" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="techSkills" id="techSkills5" value="5" >
-      </label>
-      </div>
+      @inputRadioGroup(
+          saveoForm("techSkills"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Compétences techniques :",
+          '_error -> saveoForm.globalError)
     </div>
 
 
     <div class="control-group">
-      <div class="controls">
-      <label for="waitingTime" class="control-label inline">
-      	Temps d'attente :
-      </label>
+      @inputRadioGroup(
+          saveoForm("waitingTime"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Temps d'attente",
+          '_error -> saveoForm.globalError)
       
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="waitingTime" id="waitingTime1" value="1" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="waitingTime" id="waitingTime2" value="2" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="waitingTime" id="waitingTime3" value="3" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="waitingTime" id="waitingTime4" value="4" >
-      </label>
-      <label class="radio inline">
-    	  <input type="radio" class="star" name="waitingTime" id="waitingTime5" value="5" >
-      </label>
-      </div>
     </div>
     <div class="actions">
       <button class="btn" onclick="showPage(2);return false;">Précédent</button>      
