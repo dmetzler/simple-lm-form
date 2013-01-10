@@ -5,15 +5,19 @@
 L'adresse d'un formulaire pour un dossier SAV donné est la suivante
 
 
-http://${host}/form/${is_internal}/${sav_id}/${cypher}
+http://${host}/form/${sav_id}/${product_id}/${cypher}
 
  * host : adresse du serveur
- * is_internal : 0 ou 1 est-ce un formulaire destiné à un interne ou non
  * sav_id : numéro de dossier que l'on veut sauvegarder
+ * product_id : Identifiant du produit
  * cypher : somme MD5 de "lm-saveo-form" + sav_id
 	par exemple pour dossier le dossier "123abc" cypher = md5("lm-saveo-form123abc")
 	La clé lm-saveo-form doit rester secrète et pourra être changée par la suite, il faut
 	donc la paramétrer
+
+Par exemple
+
+   [http://lm-saveo-form.herokuapp.com/form/123456/123456/32b55e10f6b01a90374fb782404cc6cc]()
 
 
 
@@ -29,47 +33,54 @@ http://${host}/forms/${from_date}/${to_date}/${cypher}
 	la clé "lm-saveo-form" est la même que pour l'API précédente
 
 
-L'appel précédent renvoie un JSON au format suivant :
+L'appel suivant 
 
-	{ 'period' : { 'start' : '2012-10-01',
-	               'end' : '2012-10-31'
-	              },
-	   'nbresult' : '5',
-	   'forms' : [
-	   {
-	   		'saveoid':'123abc',			// Numéro du dossier SAV
-	   		'age' : '0',				// entre 1 et 7 
-	   		'gender : 'male',			// male ou female
-	   		'diyLevel' : 'debutant',	// debutant|occasionel|passione|expert
-	   		'productNote' :'5',			// Note du produit de 1 à 5
-	   		'productRecommend' : '0',	// Est ce que le produit est recommandé
-	   		'productAvisTitle':'Titre de l\'avis',
-	   		'productAvisDescription':'Description de l\'avis',
-	   		'productHasPositiveNote' : '1',
-	   		'productPositiveNoteDesc' : 'Une note positive',
-	   		'productHasNegativeNote' : '1',
-	   		'productNegativeNoteDesc' : 'Une note positive',
-	   		'productQuality':'5',
-	   		'productUsage':'5',
-	   		'productNotice':'5',
-	   		'productMontage':'5',
-	   		'productEntretien':'5',
-	   		'productSecurity':'5',
-	   		'serviceNote' :'5',			// Note du service de 1 à 5
-	   		'serviceRecommend' : '0',	// Est ce que le service est recommandé
-	   		'serviceAvisTitle':'Titre de l\'avis',
-	   		'serviceAvisDescription':'Description de l\'avis',
-	   		'serviceHasPositiveNote' : '1',
-	   		'servicePositiveNoteDesc' : 'Une note positive',
-	   		'serviceHasNegativeNote' : '1',
-	   		'serviceNegativeNoteDesc' : 'Une note positive',
-	   		'serviceRespect':'5',
-	   		'serviceAccueil':'5',
-	   		'serviceEcoute':'5',
-	   		'serviceConfiance':'5',
-	   		'serviceTechSkill':'5',
-	   		'serviceWaitTime':'5',
-	   },
-	   ...
-	    ]
-	}
+	[http://lm-saveo-form.herokuapp.com/forms/2013-01-01/2013-12-31/a5084edcb1d825181f7e62bd4475389]()
+
+Renvoie un JSON au format suivant :
+
+
+
+	{ "period" : { "start" : "2013-01-01",
+               "end" : "2013-12-31"
+              },
+   "nbresult" : "1",
+   "forms" : [ {
+   		"id":1,
+   		"created":"2013-01-10",
+   		"updated":null,
+   		"saveoId":"123456",
+   		"productId":"123456",
+   		"age":"-18",
+   		"gender":"femme",
+   		"diyLevel":"debutant",
+   		"globalProductRating":1,
+   		"recommendProduct":false,
+   		"productAvistitle":"Titre de l'avis détaillé sur le produit",
+   		"productAvis":"Contenu de l'avis détaillé",
+   		"productHasPositiveNote":true,
+   		"productPositiveNote":"Note positive",
+   		"productHasNegativeNote":true,
+   		"productNegativeNote":"Note négative",
+   		"productQuality":2,
+   		"productUsage":5,
+   		"productNotice":3,
+   		"productMontage":1,
+   		"productMaintenance":4,
+   		"productSecurity":1,
+   		"globalServiceRating":2,
+   		"recommendService":false,
+   		"serviceAvistitle":"Titre de l'avis sur le service",
+   		"serviceAvis":"Contenu de l'avis sur le service",
+   		"serviceHasPositiveNote":true,
+   		"servicePositiveNote":"note positive",
+   		"serviceHasNegativeNote":true,
+   		"serviceNegativeNote":"note négative",
+   		"serviceRespect":5,
+   		"accueil":1,
+   		"ecoute":5,
+   		"confiance":1,
+   		"techSkills":5,
+   		"waitingTime":3
+   	}]
+}
