@@ -33,9 +33,7 @@ http://${host}/forms/${from_date}/${to_date}/${cypher}
 	la clé "lm-saveo-form" est la même que pour l'API précédente
 
 
-L'appel suivant 
-
-	[http://lm-saveo-form.herokuapp.com/forms/2013-01-01/2013-12-31/a5084edcb1d825181f7e62bd4475389]()
+L'appel suivant [http://lm-saveo-form.herokuapp.com/forms/2013-01-01/2013-12-31/a5084edcb1d825181f7e62bd4475389]()
 
 Renvoie un JSON au format suivant :
 
@@ -44,43 +42,44 @@ Renvoie un JSON au format suivant :
 	{ "period" : { "start" : "2013-01-01",
                "end" : "2013-12-31"
               },
-   "nbresult" : "1",
-   "forms" : [ {
-   		"id":1,
-   		"created":"2013-01-10",
-   		"updated":null,
-   		"saveoId":"123456",
-   		"productId":"123456",
-   		"age":"-18",
-   		"gender":"femme",
-   		"diyLevel":"debutant",
-   		"globalProductRating":1,
-   		"recommendProduct":false,
-   		"productAvistitle":"Titre de l'avis détaillé sur le produit",
-   		"productAvis":"Contenu de l'avis détaillé",
-   		"productHasPositiveNote":true,
-   		"productPositiveNote":"Note positive",
-   		"productHasNegativeNote":true,
-   		"productNegativeNote":"Note négative",
-   		"productQuality":2,
-   		"productUsage":5,
-   		"productNotice":3,
-   		"productMontage":1,
-   		"productMaintenance":4,
-   		"productSecurity":1,
-   		"globalServiceRating":2,
-   		"recommendService":false,
-   		"serviceAvistitle":"Titre de l'avis sur le service",
-   		"serviceAvis":"Contenu de l'avis sur le service",
-   		"serviceHasPositiveNote":true,
-   		"servicePositiveNote":"note positive",
-   		"serviceHasNegativeNote":true,
-   		"serviceNegativeNote":"note négative",
-   		"serviceRespect":5,
-   		"accueil":1,
-   		"ecoute":5,
-   		"confiance":1,
-   		"techSkills":5,
-   		"waitingTime":3
-   	}]
-}
+        "nbresult" : "1",
+        "forms" : [ {
+	   		"id":1,
+	   		"created":"2013-01-10",
+	   		"updated":null,
+	   		"saveoId":"123456",
+	   		"productId":"123456",
+	   		"age":"-18",
+	   		"gender":"femme",
+	   		"diyLevel":"debutant",
+	   		"globalProductRating":1,
+	   		"recommendProduct":false,
+	   		"productAvistitle":"Titre de l'avis détaillé sur le produit",
+	   		"productAvis":"Contenu de l'avis détaillé",
+	   		"productHasPositiveNote":true,
+	   		"productPositiveNote":"Note positive",
+	   		"productHasNegativeNote":true,
+	   		"productNegativeNote":"Note négative",
+	   		"productQuality":2,
+	   		"productUsage":5,
+	   		"productNotice":3,
+	   		"productMontage":1,
+	   		"productMaintenance":4,
+	   		"productSecurity":1,
+	   		"globalServiceRating":2,
+	   		"recommendService":false,
+	   		"serviceAvistitle":"Titre de l'avis sur le service",
+	   		"serviceAvis":"Contenu de l'avis sur le service",
+	   		"serviceHasPositiveNote":true,
+	   		"servicePositiveNote":"note positive",
+	   		"serviceHasNegativeNote":true,
+	   		"serviceNegativeNote":"note négative",
+	   		"serviceRespect":5,
+	   		"accueil":1,
+	   		"ecoute":5,
+	   		"confiance":1,
+	   		"techSkills":5,
+	   		"waitingTime":3
+   		}]
+	}
+
