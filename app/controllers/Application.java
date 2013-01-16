@@ -50,6 +50,18 @@ public class Application extends Controller {
     return ok(create.render(form.fill(saveoForm)));
   }
 
+  public static Result createInternal(String formid, String productid, String ldap, String cypher) throws Exception {
+    if(!md5(KEY + formid).equals(cypher)) {
+      return badRequest("Invalid cypher string");
+    }
+    SaveoForm saveoForm = new SaveoForm();
+    saveoForm.saveoId = formid;
+    saveoForm.productId = productid;
+    saveoForm.ldap = ldap;
+    Form<SaveoForm> form = form(SaveoForm.class);      
+    return ok(createInternal.render(form.fill(saveoForm)));
+  }
+
   public static Result save() {
 
   	Form<SaveoForm> form = form(SaveoForm.class).bindFromRequest();

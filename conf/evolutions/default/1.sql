@@ -9,6 +9,7 @@ create table saveo_form (
   updated                   timestamp,
   saveo_id                  varchar(255),
   product_id                varchar(255),
+  ldap                      varchar(255),
   age                       varchar(255),
   gender                    varchar(255),
   diy_level                 varchar(255),

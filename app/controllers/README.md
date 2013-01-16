@@ -19,7 +19,9 @@ Par exemple
 
    [http://lm-saveo-form.herokuapp.com/form/123456/123456/32b55e10f6b01a90374fb782404cc6cc]()
 
+Dans le cas d'un interne, il faut ajouter le LDAP dans l'URL comme ceci
 
+    http://${host}/form/${sav_id}/${product_id}/${ldap}/${cypher}
 
 ## Récupération des réponse de formulaire
 
@@ -49,6 +51,7 @@ Renvoie un JSON au format suivant :
 	   		"updated":null,
 	   		"saveoId":"123456",
 	   		"productId":"123456",
+	   		"ldap":"10034849"
 	   		"age":"-18",
 	   		"gender":"femme",
 	   		"diyLevel":"debutant",

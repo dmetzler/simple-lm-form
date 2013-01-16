@@ -6,6 +6,9 @@
 GET     /                           controllers.Application.index()
 
 GET		/form/:formid/:productid/:cypher				controllers.Application.create(formid: String, productid: String, cypher: String)
+
+GET		/form/:formid/:productid/:ldap/:cypher				controllers.Application.createInternal(formid: String, productid: String, ldap:String, cypher: String)
+
 POST	/form					    controllers.Application.save()
 
 

@@ -39,7 +39,9 @@ public class SaveoForm extends Model {
     @Constraints.Required
     public String productId;
 
-    @Constraints.Required
+
+    public String ldap;
+
     public String age;
 
     public String gender;
