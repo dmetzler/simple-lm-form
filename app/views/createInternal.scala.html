@@ -1,0 +1,297 @@
+@(saveoForm: Form[SaveoForm])
+
+@import helper._
+@import models.FormValues._
+
+<script type="text/javascript">
+  var showPage = function(page) {
+    if(page == 1) {
+      $("#serviceInformations").show();
+      $("#productInformations").hide();
+      window.location.hash="productInformations";    
+    } else if(page == 2) {
+      $("#productInformations").hide();
+      $("#serviceInformations").show();
+      window.location.hash="serviceInformations";
+    }
+  }
+</script>
+
+
+@main("Questionnaires satisfaction SAV dossier n°: " + saveoForm.get().saveoId) {
+  
+<div class="head" style="clear:both">
+</div>
+@form(routes.Application.save()) {
+  
+<input type="hidden" name="saveoId" value="@saveoForm.get().saveoId"/>
+<input type="hidden" name="productId" value="@saveoForm.get().productId"/>
+<input type="hidden" name="ldap" value="@saveoForm.get().ldap"/>
+<ul class="unstyled">
+  <li id="productInformations">
+    <legend>AVIS SUR LE PRODUIT</legend>
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("globalProductRating"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Note générale",
+          '_error -> saveoForm.globalError)
+    </div>
+
+
+
+    <div class="control-group">    
+      <label for="recommendProduct" class="control-label">
+        Je recommanderai ce produit à un ami :
+      </label>
+
+
+      <div class="controls">
+      <label class="radio inline">
+        <input type="radio" name="recommendProduct" id="recommendProduct1" value="1" checked> Oui
+      </label>
+      <label class="radio inline">
+        <input type="radio" name="recommendProduct" id="recommendProduct2" value="0" > Non
+      </label>    
+      </div>
+    </div>
+
+
+    <legend>Partagez votre opinion et écrivez un avis détaillé</legend>
+
+    @inputText(saveoForm("productAvistitle"),
+    '_label -> "Titre de l'avis",
+    '_help -> "Exemple: bon rapport qualité/prix.",
+    'class -> "input-xlarge")
+
+    <span class="help-block"></span>
+
+    
+    @textarea(field = saveoForm("productAvis"), args = 'rows -> 10, 
+    '_label -> "Avis :", 
+    'class -> "input-xlarge",
+    '_help -> "Votre avis doit comporter au moins 50 caractères,. Sinon seules les notes seront prises en compte.")
+
+    <div class="container">
+      <div class="row">
+        <div class="span4">
+          <label>Vous avez aimé</label>
+          @checkbox(field = saveoForm("productHasPositiveNote"), '_label -> "")
+          @inputText(saveoForm("productPositiveNote"),                        
+            'placeholder -> "Ajouter une note positive",
+            'class -> "input-large", '_label -> "")          
+        </div>
+        <div class="span4">
+          <label>Vous n'avez pas aimé</label>
+          @checkbox(field = saveoForm("productHasNegativeNote"), '_label -> "")
+          @inputText(saveoForm("productNegativeNote"),                        
+            'placeholder -> "Ajouter une note négative",
+            'class -> "input-large", '_label -> "")                    
+        </div>
+      </div>
+    </div>
+
+    <legend>Notez le produit sur une ou plusieurs des catégories suivantes</legend>
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("productQuality"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Qualité",
+          '_error -> saveoForm.globalError)
+    </div>
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("productUsage"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Usage",
+          '_error -> saveoForm.globalError)
+    </div>
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("productNotice"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Notice",
+          '_error -> saveoForm.globalError)
+    </div>
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("productMontage"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Montage",
+          '_error -> saveoForm.globalError)
+    </div>
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("productMaintenance"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Entretien",
+          '_error -> saveoForm.globalError)
+    </div>
+
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("productSecurity"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Sécurité d'utilisation",
+          '_error -> saveoForm.globalError)
+    </div>
+
+
+    
+    <div class="actions">      
+      <button class="btn" onclick="showPage(2);return false;">Suivant</button>
+    </div>
+  </li>
+
+
+
+
+  <li id="serviceInformations" style="display:none">
+    <legend>NOTE DU SERVICE</legend>
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("globalServiceRating"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Note générale",
+          '_error -> saveoForm.globalError)
+    </div>
+    
+
+
+
+    <div class="control-group">    
+      <label for="recommendProduct" class="control-label">
+        Je recommanderai ce service à un ami :
+      </label>
+
+
+      <div class="controls">
+      <label class="radio inline">
+        <input type="radio" name="recommendService" id="recommendService1" value="1" checked> Oui
+      </label>
+      <label class="radio inline">
+        <input type="radio" name="recommendService" id="recommendService2" value="0" > Non
+      </label>    
+      </div>
+    </div>
+
+    <legend>Partagez votre opinion et écrivez un avis détaillé</legend>
+
+    @inputText(saveoForm("serviceAvistitle"),
+    '_label -> "Titre de l'avis",
+    '_help -> "Exemple: bon rapport qualité/prix.",
+    'class -> "input-xlarge")
+
+    <span class="help-block"></span>
+
+    
+    @textarea(field = saveoForm("serviceAvis"), args = 'rows -> 10, 
+    '_label -> "Avis :", 
+    'class -> "input-xlarge",
+    '_help -> "Votre avis doit comporter au moins 50 caractères,. Sinon seules les notes seront prises en compte.")
+
+    <div class="container">
+      <div class="row">
+        <div class="span4">
+          <label>Vous avez aimé</label>
+          @checkbox(field = saveoForm("serviceHasPositiveNote"), '_label -> "")
+          @inputText(saveoForm("servicePositiveNote"),                        
+            'placeholder -> "Ajouter une note positive",
+            'class -> "input-large", '_label -> "")          
+        </div>
+        <div class="span4">
+          <label>Vous n'avez pas aimé</label>
+          @checkbox(field = saveoForm("serviceHasNegativeNote"), '_label -> "")
+          @inputText(saveoForm("serviceNegativeNote"),                        
+            'placeholder -> "Ajouter une note négative",
+            'class -> "input-large", '_label -> "")                    
+        </div>
+      </div>
+    </div>
+
+    <legend>Notez le service sur une ou plusieurs des catégories suivantes</legend>
+
+    <div class="control-group">
+        @inputRadioGroup(
+          saveoForm("serviceRespect"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Respect du service :",
+          '_error -> saveoForm.globalError)          
+    </div>
+
+
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("accueil"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Accueil :",
+          '_error -> saveoForm.globalError)
+    </div>
+
+
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("ecoute"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Ecoute :",
+          '_error -> saveoForm.globalError)      
+    </div>
+
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("confiance"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Confiance :",
+          '_error -> saveoForm.globalError)      
+    </div>
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("techSkills"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Compétences techniques :",
+          '_error -> saveoForm.globalError)
+    </div>
+
+
+    <div class="control-group">
+      @inputRadioGroup(
+          saveoForm("waitingTime"),
+          options = options((1 to 5).map(_.toString -> "").toMap),
+          'class -> "star",
+          '_label -> "Temps d'attente",
+          '_error -> saveoForm.globalError)
+      
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="showPage(1);return false;">Précédent</button>      
+      <button type="submit" class="btn">Envoyer </button>
+    </div>
+  </li>
+  </ul>
+  
+}
+    
+}
